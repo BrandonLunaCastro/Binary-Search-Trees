@@ -74,15 +74,27 @@ class Tree {
       root = null;
       return next;
     } else {
-
+      const successor = this.#findMinimum(value, root.rightChild);
+      return successor;
     }
   }
+
+  #findMinimum (value, root) {
+    let minimum;
+    while (root.leftChild !== null) {
+      minimum = root.data;
+    }
+    return minimum;
+  };
 }
-const newTree = new Tree([1, 100, 2, 4, 32, 5]);
+const newTree = new Tree([1, 90, 2, 4, 32, 5]);
 const root = newTree.root;
 newTree.insert(3, root);
+newTree.insert(95, root);
 console.log(newTree.prettyPrint(root));
-newTree.delete(3, root);
-newTree.delete(100, root);
-console.log(root);
+/*
+ newTree.delete(3, root);
+ newTree.delete(100, root);
+*/
+console.log(newTree.delete(5, root));
 console.log(newTree.prettyPrint(root));
