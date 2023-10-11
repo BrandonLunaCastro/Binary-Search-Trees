@@ -103,30 +103,49 @@ class Tree {
   }
 
   levelOrderIterative (callback, root = this.root) {
-    let queue = [];
+    const queue = [];
     const levelPrint = [];
-    queue = callback(queue, root);
+    !callback ? queue.push(root) : callback(queue, root);
     while (queue.length !== 0) {
-      root = root.leftChild;
-      const extract = queue.shift();
-      levelPrint.push(extract);
-      console.log(levelPrint);
-      callback(queue, root.leftChild);
-      callback(queue, root.rightChild);
+      const current = queue.shift();
+      levelPrint.push(current.data);
+      if (current.leftChild !== null) {
+        !callback ? queue.push(current.leftChild) : callback(queue, current.leftChild);
+      }
+      if (current.rightChild !== null) {
+        !callback ? queue.push(current.rightChild) : callback(queue, current.rightChild);
+      }
     }
+    return levelPrint;
+  }
+
+  levelOrderRecursive (callback, root = this.root) {
+    if (root === null) return null;
+    let queue = [];
+    queue = callback(queue, root);
+    if (root.leftChild) {
+      const leftRoot = this.levelOrderRecursive(callback, root.leftChild);
+      queue.push(leftRoot);
+    }
+    if (root.rightChild) {
+      const rightRoot = this.levelOrderRecursive(callback, root.rightChild);
+      queue.push(rightRoot);
+    }
+    return queue;
   }
 }
 const newTree = new Tree([1, 90, 2, 4, 32, 6, 5]);
 const root = newTree.root;
 newTree.insert(3, root);
 newTree.insert(95, root);
+// console.log(newTree.delete(4, root));
 const cb = (queue, root) => {
   if (root !== null) {
-    queue.push(root.data);
+    queue.push(root);
   }
   return queue;
 };
-newTree.levelOrderIterative(cb);
-console.log(newTree.prettyPrint(root));
-// console.log(newTree.delete(4, root));
-// console.log(newTree.prettyPrint(root));
+
+newTree.prettyPrint(root);
+console.log(newTree.levelOrderRecursive(cb));
+// console.log(newTree.levelOrderIterative(callbackIterative));
