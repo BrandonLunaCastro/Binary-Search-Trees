@@ -64,12 +64,7 @@ class Tree {
       root.rightChild = this.delete(value, root.rightChild);
       return root;
     }
-    /*     if (root.leftChild === null && root.rightChild === null) {
-      root.data = null;
-      root = null
-      return root;
-    }
- */
+
     if (root.leftChild === null) {
       const next = root.rightChild;
       root = null;
@@ -82,7 +77,7 @@ class Tree {
       // pasamos a la funcion findMinimum el nodo hijo derecho
       const temp = this.#findMinimum(root.rightChild);
       root.data = temp.data;// al valor actual lo reemplazamos por el valor minimo encontrado
-      root.rightChild = this.delete(root.data, root.rightChild); // ejecutamos de forma recursiva la funcion para eliminar el duplicado
+      root.rightChild = this.delete(root.data, root.rightChild); // ejecutamos de forma recursiva la funcion para eliminar el node duplicado
       return root;
     }
   }
@@ -95,13 +90,43 @@ class Tree {
     }
     return root;
   };
+
+  find (value, root) {
+    if (value === root.data) {
+      return root;
+    }
+    if (value < root.data) {
+      return this.find(value, root.leftChild);
+    } else if (value > root.data) {
+      return this.find(value, root.rightChild);
+    }
+  }
+
+  levelOrderIterative (callback, root = this.root) {
+    let queue = [];
+    const levelPrint = [];
+    queue = callback(queue, root);
+    while (queue.length !== 0) {
+      root = root.leftChild;
+      const extract = queue.shift();
+      levelPrint.push(extract);
+      console.log(levelPrint);
+      callback(queue, root.leftChild);
+      callback(queue, root.rightChild);
+    }
+  }
 }
 const newTree = new Tree([1, 90, 2, 4, 32, 6, 5]);
 const root = newTree.root;
 newTree.insert(3, root);
 newTree.insert(95, root);
-console.log(newTree.prettyPrint(root));
-newTree.delete(32, root);
+const cb = (queue, root) => {
+  if (root !== null) {
+    queue.push(root.data);
+  }
+  return queue;
+};
+newTree.levelOrderIterative(cb);
 console.log(newTree.prettyPrint(root));
 // console.log(newTree.delete(4, root));
 // console.log(newTree.prettyPrint(root));
