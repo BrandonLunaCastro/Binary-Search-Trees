@@ -64,7 +64,12 @@ class Tree {
       root.rightChild = this.delete(value, root.rightChild);
       return root;
     }
-
+    /*     if (root.leftChild === null && root.rightChild === null) {
+      root.data = null;
+      root = null
+      return root;
+    }
+ */
     if (root.leftChild === null) {
       const next = root.rightChild;
       root = null;
@@ -74,27 +79,29 @@ class Tree {
       root = null;
       return next;
     } else {
-      const successor = this.#findMinimum(value, root.rightChild);
-      return successor;
+      // pasamos a la funcion findMinimum el nodo hijo derecho
+      const temp = this.#findMinimum(root.rightChild);
+      root.data = temp.data;// al valor actual lo reemplazamos por el valor minimo encontrado
+      root.rightChild = this.delete(root.data, root.rightChild); // ejecutamos de forma recursiva la funcion para eliminar el duplicado
+      return root;
     }
   }
 
-  #findMinimum (value, root) {
-    let minimum;
+  #findMinimum (root) {
+    // una vez dentro hacemos un while que se ejecuta hasta que no se encuentre hijo izquierdo
     while (root.leftChild !== null) {
-      minimum = root.data;
+      // le asignamos a root el valor del minimo hijo izquierdo encontrado
+      root = root.leftChild;
     }
-    return minimum;
+    return root;
   };
 }
-const newTree = new Tree([1, 90, 2, 4, 32, 5]);
+const newTree = new Tree([1, 90, 2, 4, 32, 6, 5]);
 const root = newTree.root;
 newTree.insert(3, root);
 newTree.insert(95, root);
 console.log(newTree.prettyPrint(root));
-/*
- newTree.delete(3, root);
- newTree.delete(100, root);
-*/
-console.log(newTree.delete(5, root));
+newTree.delete(32, root);
 console.log(newTree.prettyPrint(root));
+// console.log(newTree.delete(4, root));
+// console.log(newTree.prettyPrint(root));
