@@ -119,19 +119,45 @@ class Tree {
     return levelPrint;
   }
 
-  levelOrderRecursive (callback, root = this.root) {
+  /* --pending to solve--
+ levelOrderRecursive (callback, root = this.root) {
     if (root === null) return null;
-    let queue = [];
-    queue = callback(queue, root);
+    if(root.leftChild)
+  } */
+  preOrder (cb, arr = [], root = this.root) {
+    if (root === null) return null;
+    !cb ? arr.push(root.data) : arr.push(cb(root));
     if (root.leftChild) {
-      const leftRoot = this.levelOrderRecursive(callback, root.leftChild);
-      queue.push(leftRoot);
+      this.preOrder(cb, arr, root.leftChild);
     }
     if (root.rightChild) {
-      const rightRoot = this.levelOrderRecursive(callback, root.rightChild);
-      queue.push(rightRoot);
+      this.preOrder(cb, arr, root.rightChild);
     }
-    return queue;
+    return arr;
+  }
+
+  inOrder (cb, arr = [], root = this.root) {
+    if (!root) return null;
+    if (root.leftChild) {
+      this.inOrder(cb, arr, root.leftChild);
+    }
+    !cb ? arr.push(root.data) : arr.push(cb(root));
+    if (root.rightChild) {
+      this.inOrder(cb, arr, root.rightChild);
+    }
+    return arr;
+  }
+
+  postOrder (cb, arr = [], root = this.root) {
+    if (!root) return null;
+    if (root.leftChild) {
+      this.postOrder(cb, arr, root.leftChild);
+    }
+    if (root.rightChild) {
+      this.postOrder(cb, arr, root.rightChild);
+    }
+    !cb ? arr.push(root.data) : arr.push(cb(root));
+    return arr;
   }
 }
 const newTree = new Tree([1, 90, 2, 4, 32, 6, 5]);
@@ -139,13 +165,21 @@ const root = newTree.root;
 newTree.insert(3, root);
 newTree.insert(95, root);
 // console.log(newTree.delete(4, root));
-const cb = (queue, root) => {
+/* const cb = (queue, root) => {
   if (root !== null) {
     queue.push(root);
   }
   return queue;
-};
+}; */
+/* const callback = (root) => {
+  if (root) return root.data;
+}; */
+// newTree.prettyPrint(root);
+console.log("Pre order");
+console.log(newTree.preOrder());
+console.log("In order");
+console.log(newTree.inOrder());
+console.log("Post order");
+console.log(newTree.postOrder());
 
-newTree.prettyPrint(root);
-console.log(newTree.levelOrderRecursive(cb));
 // console.log(newTree.levelOrderIterative(callbackIterative));
