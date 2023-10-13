@@ -159,6 +159,23 @@ class Tree {
     !cb ? arr.push(root.data) : arr.push(cb(root));
     return arr;
   }
+
+  height (root = this.root) {
+    if (!root) return -1;
+    const leftHeight = this.height(root.leftChild);
+    const rightHeight = this.height(root.rightChild);
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  depth (root = this.root, level = 0) {
+    if (!root) return level;
+    level++;
+    const depthLeft = this.depth(root.leftChild, level);
+    const depthRight = this.depth(root.rightChild, level);
+    return Math.max(depthLeft, depthRight);
+  }
+
+  isBalanced
 }
 const newTree = new Tree([1, 90, 2, 4, 32, 6, 5]);
 const root = newTree.root;
@@ -175,11 +192,5 @@ newTree.insert(95, root);
   if (root) return root.data;
 }; */
 // newTree.prettyPrint(root);
-console.log("Pre order");
-console.log(newTree.preOrder());
-console.log("In order");
-console.log(newTree.inOrder());
-console.log("Post order");
-console.log(newTree.postOrder());
-
+console.log(newTree.depth());
 // console.log(newTree.levelOrderIterative(callbackIterative));
