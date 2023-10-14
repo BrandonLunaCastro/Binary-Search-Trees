@@ -119,11 +119,14 @@ class Tree {
     return levelPrint;
   }
 
-  /* --pending to solve--
- levelOrderRecursive (callback, root = this.root) {
-    if (root === null) return null;
-    if(root.leftChild)
+  /*   levelOrderRecursive (queue = [this.root], root = this.root) {
+    if (queue.length === 0) return null;
+    if (root.leftChild)queue.push(root.leftChild);
+    if (root.rightChild)queue.push(root.rightChild);
+    this.levelOrderRecursive(queue, root.leftChild);
+    this.levelOrderRecursive(queue, root.rightChild);
   } */
+
   preOrder (cb, arr = [], root = this.root) {
     if (root === null) return null;
     !cb ? arr.push(root.data) : arr.push(cb(root));
@@ -175,12 +178,29 @@ class Tree {
     return Math.max(depthLeft, depthRight);
   }
 
-  isBalanced
+  isBalanced () {
+    const result = this.stateTree();
+    if (result) return true;
+    return false;
+  }
+
+  stateTree (root = this.root) {
+    if (!root) return 0;
+    const leftH = this.stateTree(root.leftChild);
+    const rightH = this.stateTree(root.rightChild);
+    if (leftH === false || rightH === false) return false;
+    if (((leftH - rightH) > 1) || ((leftH - rightH) < -1)) return false;
+
+    return Math.max(leftH, rightH) + 1;
+  }
 }
-const newTree = new Tree([1, 90, 2, 4, 32, 6, 5]);
+// const newTree = new Tree([1, 90, 2, 4, 32, 6, 5]);
+const newTree = new Tree([1, 0, 4, 3, 2]);
 const root = newTree.root;
 newTree.insert(3, root);
-newTree.insert(95, root);
+newTree.insert(5, root);
+newTree.insert(6, root);
+newTree.insert(7, root);
 // console.log(newTree.delete(4, root));
 /* const cb = (queue, root) => {
   if (root !== null) {
@@ -191,6 +211,6 @@ newTree.insert(95, root);
 /* const callback = (root) => {
   if (root) return root.data;
 }; */
-// newTree.prettyPrint(root);
-console.log(newTree.depth());
+newTree.prettyPrint(root);
+console.log(newTree.isBalanced());
 // console.log(newTree.levelOrderIterative(callbackIterative));
