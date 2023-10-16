@@ -2,11 +2,11 @@ import Node from "./node.js";
 
 class Tree {
   constructor (arr) {
-    this.arr = this.sortArray(arr);
-    this.root = this.buildTree(this.arr, 0, this.arr.length - 1);
+    this.arr = this.#sortArray(arr);
+    this.root = this.#buildTree(this.arr, 0, this.arr.length - 1);
   }
 
-  sortArray = (arr) => {
+  #sortArray = (arr) => {
     let arrSorted = arr.sort((a, b) => a - b);
     arrSorted = arrSorted.reduce((acc, item) => {
       if (!acc.includes(item)) {
@@ -17,12 +17,12 @@ class Tree {
     return arrSorted;
   };
 
-  buildTree = (arr, start, end) => {
+  #buildTree = (arr, start, end) => {
     if (start > end) return null;
     const middle = Math.round((start + end) / 2);
     const node = new Node(arr[middle]);
-    node.leftChild = this.buildTree(arr, start, middle - 1);
-    node.rightChild = this.buildTree(arr, middle + 1, end);
+    node.leftChild = this.#buildTree(arr, start, middle - 1);
+    node.rightChild = this.#buildTree(arr, middle + 1, end);
     return node;
   };
 
@@ -188,7 +188,7 @@ class Tree {
 
   rebalance () {
     const arrBST = this.inOrder();
-    return this.buildTree(arrBST, 0, arrBST.length - 1);
+    return this.#buildTree(arrBST, 0, arrBST.length - 1);
   }
 }
 
