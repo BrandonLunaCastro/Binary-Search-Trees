@@ -39,7 +39,7 @@ class Tree {
     }
   };
 
-  insert (value, root) {
+  insert (value, root = this.root) {
     if (root === null) {
       const node = new Node(value);
       return node;
@@ -191,27 +191,5 @@ class Tree {
     return this.buildTree(arrBST, 0, arrBST.length - 1);
   }
 }
-// const newTree = new Tree([1, 90, 2, 4, 32, 6, 5]);
-const newTree = new Tree([1, 0, 4, 3, 2]);
-const root = newTree.root;
-newTree.insert(3, root);
-newTree.insert(5, root);
-newTree.insert(6, root);
-newTree.insert(7, root);
-// console.log(newTree.delete(4, root));
-/* const cb = (queue, root) => {
-  if (root !== null) {
-    queue.push(root);
-  }
-  return queue;
-}; */
-/* const callback = (root) => {
-  if (root) return root.data;
-}; */
-newTree.prettyPrint();
-console.log(newTree.isBalanced());
-newTree.root = newTree.rebalance();
-newTree.prettyPrint();
-console.log(newTree.isBalanced());
-// newTree.prettyPrint();
-// console.log(newTree.levelOrderIterative(callbackIterative));
+
+export { Tree };
