@@ -26,7 +26,7 @@ class Tree {
     return node;
   };
 
-  prettyPrint = (node, prefix = "", isLeft = true) => {
+  prettyPrint = (node = this.root, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
     }
@@ -102,7 +102,7 @@ class Tree {
     }
   }
 
-  levelOrderIterative (callback, root = this.root) {
+  levelOrder (callback, root = this.root) {
     const queue = [];
     const levelPrint = [];
     !callback ? queue.push(root) : callback(queue, root);
@@ -118,14 +118,6 @@ class Tree {
     }
     return levelPrint;
   }
-
-  /*   levelOrderRecursive (queue = [this.root], root = this.root) {
-    if (queue.length === 0) return null;
-    if (root.leftChild)queue.push(root.leftChild);
-    if (root.rightChild)queue.push(root.rightChild);
-    this.levelOrderRecursive(queue, root.leftChild);
-    this.levelOrderRecursive(queue, root.rightChild);
-  } */
 
   preOrder (cb, arr = [], root = this.root) {
     if (root === null) return null;
@@ -193,6 +185,11 @@ class Tree {
 
     return Math.max(leftH, rightH) + 1;
   }
+
+  rebalance () {
+    const arrBST = this.inOrder();
+    return this.buildTree(arrBST, 0, arrBST.length - 1);
+  }
 }
 // const newTree = new Tree([1, 90, 2, 4, 32, 6, 5]);
 const newTree = new Tree([1, 0, 4, 3, 2]);
@@ -211,6 +208,10 @@ newTree.insert(7, root);
 /* const callback = (root) => {
   if (root) return root.data;
 }; */
-newTree.prettyPrint(root);
+newTree.prettyPrint();
 console.log(newTree.isBalanced());
+newTree.root = newTree.rebalance();
+newTree.prettyPrint();
+console.log(newTree.isBalanced());
+// newTree.prettyPrint();
 // console.log(newTree.levelOrderIterative(callbackIterative));
